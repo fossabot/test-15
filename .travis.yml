@@ -1,6 +1,11 @@
 language: java
 jdk:
-- openjdk8
-before_install:
+- oraclejdk8
+before_script:
 - chmod +x gradlew
-- "./gradlew setupDecompWorkspace"
+script:
+  - ./gradlew check
+  - ./gradlew codeCoverageReport
+after_success:
+  - if [ -e ./gradlew ]; then ./gradlew jacocoTestReport;else gradle jacocoTestReport;fi
+  - bash <(curl -s https://codecov.io/bash)
